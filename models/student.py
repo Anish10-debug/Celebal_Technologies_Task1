@@ -1,6 +1,3 @@
-import sqlalchemy
-
-
 from sqlalchemy import Table,Column, column
 from sqlalchemy.sql.sqltypes import Integer,String
 from config.db import meta
@@ -13,4 +10,11 @@ studentDetails=Table(
     Column('Email',String(255)),
     Column('Branch',String(255)),
     Column('Batch',String(255)),
+)
+
+signin=Table(
+    'signin',meta,
+    Column('ID',Integer,primary_key=True),
+    Column('Username',String(255)),
+    Column('Password_User',String(255)),
 )

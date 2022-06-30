@@ -6,12 +6,13 @@ from config.db import conn
 from schema.student import Student
 from schema.student import SignIn
 from passlib.hash import bcrypt
+import datetime
 import jwt
 
 
 student=APIRouter()
 oauth2_scheme= OAuth2PasswordBearer(tokenUrl='check_auth')
-
+JWT_SECRET="mysecret"
 
 @student.post("/signIn")
 async def sign_up(sign:SignIn):
@@ -29,9 +30,10 @@ async def check_authentication(form_data: OAuth2PasswordRequestForm=Depends()):
     if not user:
         return {'Invalid username/password'}
     else:
-        # token=jwt.encode(user[0].dict(),JWT_SECRET)
-        # return {'access-token':token}
-        return{'Valid'}
+        token=jwt.encode(dict(user[0]),JWT_SECRET,algorithm="HS256")
+        return {'access-token':token}
+        # print(dict(user[0]))
+        # return{'Valid'}
 
 def verify_password(password:str,hashed_pass:str):
     return bcrypt.verify(password,hashed_pass)
